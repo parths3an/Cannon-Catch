@@ -1,0 +1,257 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0300 
+header_name {.h} 
+code_name {.cxx}
+decl {//} {
+  comment {{\\section{Design}
+
+\\begin{enumerate}
+\\item Subclss one of the exisiting \\verb|Fl_Widget| classses (either
+\\verb|Fl_Window| or \\verb|Fl_Box|) and implement 
+our own version of draw().
+\\item Creat an instance (object or variable) of our new class in main.
+\\item In the overriden draw function, put the code to draw the graph.
+ \\begin{alltt}
+  plot data as we read it from the file in a loop
+  Draw the dots (astrixs)
+  we can plot the dots using 
+(\\verb|fl_point(int x, int y)|)
+and connect each to its previous dot using line.
+imoreder to draw the line we can use
+ (\\verb|fl_rect(int x, int y, int w, int h)| )  
+
+
+
+
+
+\\end{alltt}
+
+
+\\item Creat the call back for the animation and use
+ (\\verb|Fl::add_timeout|)
+to kick it off. Code the cycle of the image.  
+
+
+
+
+\\end{enumerate}
+
+
+\\end{description}
+}
+
+
+
+
+} private local
+} 
+
+decl {\#include <iostream>} {private local
+} 
+
+decl {\#include <iomanip>} {private local
+} 
+
+decl {\#include <sstream>} {private local
+} 
+
+decl {using namespace std;} {private local
+} 
+
+decl {\#include <FL/Fl_PNG_Image.H>} {private local
+} 
+
+decl {\#include <FL/Fl_GIF_Image.H>} {private local
+} 
+
+decl {const int SKY_IMAGES = 22;} {private local
+} 
+
+decl {Fl_GIF_Image* sky_images[SKY_IMAGES];} {private local
+} 
+
+decl {const int HELI_IMAGES = 16;} {private local
+} 
+
+decl {Fl_GIF_Image* heli_images[HELI_IMAGES];} {private local
+} 
+
+decl {\#include <irrKlang.h>} {private local
+} 
+
+decl {using namespace irrklang;} {private local
+} 
+
+decl {ISoundEngine* engine = createIrrKlangDevice();} {private local
+} 
+
+decl {Fl_Box* ball;} {private local
+} 
+
+decl {Fl_PNG_Image* ball_image;} {private local
+} 
+
+decl {int x;} {private local
+} 
+
+decl {\#include <string.H>} {public local
+} 
+
+Function {} {open
+} {
+  Fl_Window start_win {
+    label Start open
+    xywh {349 110 683 384} type Double hide
+    code0 {\#include <FL/Fl_PNG_Image.H>}
+    code1 {Fl_PNG_Image* sky_image = new Fl_PNG_Image("desert.png");}
+    code2 {o->image(sky_image);}
+  } {
+    Fl_Box {} {
+      xywh {0 0 623 384}
+      code0 {\#include <FL/Fl_JPEG_Image.H>}
+      code1 {o->image(new Fl_JPEG_Image("backg3.jpg"));}
+    }
+    Fl_Button start {
+      callback {win->show();
+start_win->hide();}
+      image {p1 - Copy.png} xywh {252 230 140 85} box BORDER_FRAME align 640
+    }
+    Fl_Text_Display {} {
+      label {Catch me if you can !!!}
+      xywh {270 70 153 0} box SHADOW_FRAME labeltype ENGRAVED_LABEL labelfont 5 labelsize 35 labelcolor 135 textcolor 88
+    }
+  }
+  code {end_window();
+show_window();} {}
+} 
+
+Function {background_timer(void*)} {open return_type void
+} {
+  code {static int i = 0;
+sky->image(sky_images[i]); 
+i = (i + 1) % SKY_IMAGES;
+sky->redraw();
+Fl::repeat_timeout(1.0/30,background_timer);} {}
+} 
+
+Function {load_images()} {open return_type void
+} {
+  code {for(int i = 0; i < SKY_IMAGES; ++i)
+ {
+   std::ostringstream oss; 
+   oss << i;
+   std::string s = "tmp0"+oss.str()+".gif";
+   sky_images[i] = new Fl_GIF_Image(s.c_str());
+ }
+ 
+
+ball = new Fl_Box(0,200,55,24);
+   ball_image = new Fl_PNG_Image("cannon.png");
+   ball->image(ball_image);} {}
+} 
+
+Function {cb_sky(void*)} {open return_type void
+} {
+  code {ball->position(ball->x()+10,ball->y());
+if((ball->x()+ball->w())>(win->x()+win->w()) || (ball->y()<0)) {
+ ball->position(1.0/30,ball->y());
+ }
+  
+  
+Fl::repeat_timeout(1.0/30,cb_sky);
+
+win->redraw();} {}
+} 
+
+Function {show_window()} {open return_type void
+} {
+  Fl_Window win {open
+    xywh {85 242 623 384} type Double hide
+  } {
+    Fl_Box sky {
+      xywh {0 0 623 384} align 512
+    }
+    Fl_Box catch_window {
+      image {crosshair.png} xywh {258 129 128 128}
+    }
+    Fl_Button button {
+      label SHOOT
+      callback {if(ball->x()>catch_window->x()&& ball->x() <catch_window->x()+catch_window->w() && ball->y()>catch_window->y()&& ball->y()<catch_window->y()+catch_window->h())// make two dimwntons to check the condition
+{score->value(score->value()+1);
+}
+else{
+life->value(life->value()-1);
+}
+
+engine->play2D("cannonshot.wav");
+
+if(life->value()==0)
+{
+
+gameover->show();
+engine->removeSoundSource("pirates.mp3");
+engine->removeSoundSource("cannonshot.wav");
+engine->play2D("game_over.wav");
+yourscore->value(score->value());
+
+win->hide();
+
+}}
+      xywh {275 335 89 25} box RFLAT_BOX color 0 labelcolor 7
+    }
+    Fl_Value_Output life {
+      label Life
+      xywh {515 11 100 24} color 7
+      code0 {life->value(3);}
+    }
+    Fl_Value_Output score {
+      label Score
+      xywh {50 11 88 24}
+      code0 {score->value(0);}
+    }
+  }
+  code {load_images();
+Fl::add_timeout(1.0/30,background_timer);
+Fl::add_timeout(1.0/3000,cb_sky);
+win->add(ball);} {}
+} 
+
+Function {end_window()} {open return_type void
+} {
+  Fl_Window gameover {open
+    xywh {418 95 623 384} type Double visible
+  } {
+    Fl_Box {} {
+      xywh {-75 -83 785 562}
+      code0 {\#include<FL/Fl_JPEG_Image.h>}
+      code1 {o->image(new Fl_JPEG_Image("gameover.jpg"));}
+    }
+    Fl_Value_Output yourscore {
+      label {Your score:}
+      xywh {126 122 40 63}
+    }
+    Fl_Value_Output higherscore {
+      label Highscore
+      xywh {530 122 45 67}
+    }
+    Fl_Button {} {
+      label {Play Again }
+      callback {gameover->hide();
+win->show();
+
+//engine->play2D("quicksilver.wav",true);
+life->value(3);
+score->value(0);}
+      xywh {35 270 230 65} box PLASTIC_DOWN_BOX down_box DOWN_BOX color 135 labelcolor 88
+    }
+    Fl_Button {} {
+      label {Main Menu}
+      callback {gameover->hide();
+start_win->show();
+life->value(3);
+score->value(0);
+//engine->play2D("blip.wav");}
+      xywh {354 270 230 65} box PLASTIC_DOWN_BOX down_box DOWN_BOX color 135 labelcolor 1
+    }
+  }
+} 

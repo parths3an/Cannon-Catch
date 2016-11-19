@@ -1,0 +1,263 @@
+\documentclass[12pt]{article}
+\input{packages}
+
+\begin{document}
+
+\ifx\sevenrm\undefined
+  \font\sevenrm=cmr7 scaled \magstep0
+\fi
+
+\newread\MyStyle
+\openin\MyStyle=src2latex.s2t
+\ifeof\MyStyle
+  \closein\MyStyle
+\else
+  \input src2latex.s2t
+  \closein\MyStyle
+\fi
+
+\ifx\gtfam\undefined
+  \ifx\dm\undefined
+    \ifx\tendm\undefined
+      \def\mc{\null}
+    \else
+      \def\mc{\tendm}
+    \fi
+  \else
+    \def\mc{\dm}
+  \fi
+  \ifx\dg\undefined
+    \ifx\tendg\undefined
+      \def\gt{\null}
+    \else
+      \def\gt{\tendg}
+    \fi
+  \else
+    \def\gt{\dg}
+  \fi
+\fi
+\ifx\sc\undefined
+  \def\sc{\null}
+\fi
+
+\tt\mc 
+
+\noindent
+\tt\mc {\tt /}{\tt /}\kern0.500em generated\kern0.500em by\kern0.500em Fast\kern0.500em Light\kern0.500em User\kern0.500em Interface\kern0.500em Designer\kern0.500em (fluid)\kern0.500em version\kern0.500em 1.0302
+
+\noindent
+\tt\mc \hfill
+
+\noindent
+{}{\tt\#}include{\tt\mc \kern0.500em}{\tt "}lab11.h{\tt "}
+
+\noindent
+{}\rm\mc {\tt /}{\tt *}{\tt *}
+
+\noindent
+\kern1.500em  \section{Design}
+   
+   \begin{enumerate}
+   \item Subclss one of the exisiting \verb|Fl_Widget| classses (either
+   \verb|Fl_Window| or \verb|Fl_Box|) and implement 
+   our own version of draw().
+   \item Creat an instance (object or variable) of our new class in main.
+   \item In the overriden draw function, put the code to draw the graph.
+    \begin{alltt}
+     plot data as we read it from the file in a loop
+     Draw the dots (astrixs)
+     we can plot the dots using 
+   (\verb|fl_point(int x, int y)|)
+   and connect each to its previous dot using line.
+   imoreder to draw the line we can use
+    (\verb|fl_rect(int x, int y, int w, int h)| )  
+   
+   
+   
+   
+   
+   \end{alltt}
+   
+   
+   \item Creat the call back for the animation and use
+    (\verb|Fl::add_timeout|)
+   to kick it off. Code the cycle of the image.  
+   
+   
+   
+   
+   \end{enumerate}
+   
+   
+   \end{description}
+    \rm\mc 
+
+\noindent
+\kern1.500em 
+
+\noindent
+\kern1.500em 
+
+\noindent
+\kern1.500em 
+
+\noindent
+\kern1.500em 
+
+\noindent
+{\tt *}{\tt /}
+\tt\mc 
+
+\noindent
+{}\rm\mc {\tt /}{\tt /}
+
+\noindent
+\tt\mc {\tt\#}include{\tt\mc \kern0.500em}{\tt <}FL{\tt /}Fl{\tt\_\kern.141em}PNG{\tt\_\kern.141em}Image.H{\tt >}
+
+\noindent
+{}static{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Box{\tt *}{\tt\mc \kern0.500em}bug{\tt\_\kern.141em}box[2];{\tt\mc \kern0.500em}
+
+\noindent
+{}static{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}PNG{\tt\_\kern.141em}Image{\tt *}{\tt\mc \kern0.500em}bug{\tt\_\kern.141em}images[2];{\tt\mc \kern0.500em}
+
+\noindent
+{}static{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Group{\tt *}{\tt\mc \kern0.500em}bug;{\tt\mc \kern0.500em}
+
+\noindent
+{}\hfill
+
+\noindent
+{}bool{\tt\mc \kern0.500em}sky{\tt\_\kern.141em}ended(){\tt\mc \kern0.500em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern1.000em}return{\tt\mc \kern0.500em}sky{\tt -}{\tt >}x(){\tt\mc \kern0.500em}+{\tt\mc \kern0.500em}sky{\tt -}{\tt >}w(){\tt\mc \kern0.500em}{\tt <}{\tt\mc \kern0.500em}win{\tt -}{\tt >}x(){\tt\mc \kern0.500em}+{\tt\mc \kern0.500em}win{\tt -}{\tt >}w();
+
+\noindent
+{}{\tt\char'175}
+
+\noindent
+{}\hfill
+
+\noindent
+{}void{\tt\mc \kern0.500em}cb{\tt\_\kern.141em}sky(void{\tt *}){\tt\mc \kern0.500em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern1.000em}bug{\tt -}{\tt >}position(bug{\tt -}{\tt >}x()+(rand(){\tt\%}100),bug{\tt -}{\tt >}y(){\tt -}(rand(){\tt\%}100));
+
+\noindent
+{}{\tt\mc \kern1.000em}if((bug{\tt -}{\tt >}x()+bug{\tt -}{\tt >}w()){\tt >}(win{\tt -}{\tt >}x()+win{\tt -}{\tt >}w()){\tt\mc \kern0.500em}{\tt |}{\tt |}{\tt\mc \kern0.500em}(bug{\tt -}{\tt >}y(){\tt <}0)){\tt\mc \kern0.500em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern2.000em}bug{\tt -}{\tt >}position(win{\tt -}{\tt >}w(){\tt /}2,win{\tt -}{\tt >}h(){\tt /}2);
+
+\noindent
+{}{\tt\mc \kern2.000em}printf({\tt "}Reached!{\tt "});
+
+\noindent
+{}{\tt\mc \kern2.000em}{\tt\char'175}
+
+\noindent
+{}{\tt\mc \kern1.000em}win{\tt -}{\tt >}redraw();
+
+\noindent
+{}{\tt\mc \kern1.000em}Fl::repeat{\tt\_\kern.141em}timeout(0.05,cb{\tt\_\kern.141em}sky);
+
+\noindent
+{}{\tt\char'175}
+
+\noindent
+{}\hfill
+
+\noindent
+{}void{\tt\mc \kern0.500em}load{\tt\_\kern.141em}images(){\tt\mc \kern0.500em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern1.000em}bug{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Group(0,400,55,24);
+
+\noindent
+{}{\tt\mc \kern1.000em}for{\tt\mc \kern0.500em}(int{\tt\mc \kern0.500em}i{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}0;{\tt\mc \kern0.500em}i{\tt\mc \kern0.500em}{\tt <}{\tt\mc \kern0.500em}2;{\tt\mc \kern0.500em}i++)
+
+\noindent
+{}{\tt\mc \kern1.000em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern2.500em}bug{\tt\_\kern.141em}box[i]{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Box(0,400,55,24+(i{\tt *}50));
+
+\noindent
+{}{\tt\mc \kern2.500em}bug{\tt\_\kern.141em}images[i]{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}PNG{\tt\_\kern.141em}Image({\tt "}ball.png{\tt "});
+
+\noindent
+{}{\tt\mc \kern2.500em}bug{\tt\_\kern.141em}box[i]{\tt -}{\tt >}image(bug{\tt\_\kern.141em}images[i]);
+
+\noindent
+{}{\tt\mc \kern2.500em}bug{\tt -}{\tt >}add(bug{\tt\_\kern.141em}box[i]);
+
+\noindent
+{}{\tt\mc \kern1.000em}{\tt\char'175}
+
+\noindent
+{}{\tt\char'175}
+
+\noindent
+{}\hfill
+
+\noindent
+{}Fl{\tt\_\kern.141em}Double{\tt\_\kern.141em}Window{\tt\mc \kern0.500em}{\tt *}win=(Fl{\tt\_\kern.141em}Double{\tt\_\kern.141em}Window{\tt\mc \kern0.500em}{\tt *})0;
+
+\noindent
+{}\hfill
+
+\noindent
+{}Fl{\tt\_\kern.141em}Box{\tt\mc \kern0.500em}{\tt *}sky=(Fl{\tt\_\kern.141em}Box{\tt\mc \kern0.500em}{\tt *})0;
+
+\noindent
+{}\hfill
+
+\noindent
+{}int{\tt\mc \kern0.500em}main(int{\tt\mc \kern0.500em}argc,{\tt\mc \kern0.500em}char{\tt\mc \kern0.500em}{\tt *}{\tt *}argv){\tt\mc \kern0.500em}{\tt\char'173}
+
+\noindent
+{}{\tt\mc \kern1.000em}{\tt\char'173}{\tt\mc \kern0.500em}win{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Double{\tt\_\kern.141em}Window(845,{\tt\mc \kern0.500em}698);
+
+\noindent
+{}{\tt\mc \kern2.000em}{\tt\char'173}{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Box{\tt *}{\tt\mc \kern0.500em}o{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}sky{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}Box(0,{\tt\mc \kern0.500em}{\tt -}40,{\tt\mc \kern0.500em}1280,{\tt\mc \kern0.500em}1024);
+
+\noindent
+{}{\tt\mc \kern3.000em}Fl{\tt\_\kern.141em}JPEG{\tt\_\kern.141em}Image{\tt *}{\tt\mc \kern0.500em}sky{\tt\_\kern.141em}image{\tt\mc \kern0.500em}={\tt\mc \kern0.500em}new{\tt\mc \kern0.500em}Fl{\tt\_\kern.141em}JPEG{\tt\_\kern.141em}Image({\tt "}sky.jpg{\tt "});
+
+\noindent
+{}{\tt\mc \kern3.000em}o{\tt -}{\tt >}image(sky{\tt\_\kern.141em}image);
+
+\noindent
+{}{\tt\mc \kern2.000em}{\tt\char'175}{\tt\mc \kern0.500em}\rm\mc {\tt /}{\tt /}\kern0.500em Fl{\tt\_\kern.141em}Box{\tt *}\kern0.500em sky
+
+\noindent
+\tt\mc {\tt\mc \kern2.000em}win{\tt -}{\tt >}end();
+
+\noindent
+{}{\tt\mc \kern1.000em}{\tt\char'175}{\tt\mc \kern0.500em}\rm\mc {\tt /}{\tt /}\kern0.500em Fl{\tt\_\kern.141em}Double{\tt\_\kern.141em}Window{\tt *}\kern0.500em win
+
+\noindent
+\tt\mc {\tt\mc \kern1.000em}load{\tt\_\kern.141em}images();
+
+\noindent
+{}{\tt\mc \kern1.000em}win{\tt -}{\tt >}add(bug);
+
+\noindent
+{}{\tt\mc \kern1.000em}Fl::add{\tt\_\kern.141em}timeout(0,cb{\tt\_\kern.141em}sky);
+
+\noindent
+{}{\tt\mc \kern1.000em}win{\tt -}{\tt >}show(argc,{\tt\mc \kern0.500em}argv);
+
+\noindent
+{}{\tt\mc \kern1.000em}return{\tt\mc \kern0.500em}Fl::run();
+
+\noindent
+{}{\tt\char'175}
+
+\noindent
+{}
+
+\rm\mc
+
+\end{document}
